@@ -29,7 +29,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 random_forest = RandomForestClassifier(n_estimators=80)
 random_forest.fit(x_train, y_train)
 
-# 4. Đánh giá mô hình bằng confusion matrix
+# 5. Đánh giá mô hình Random Forest bằng ma trận nhầm lẫn, accuracy, precision, recall, và F1 score
 y_predict = random_forest.predict(x_test)
 cm_df = pd.crosstab(y_test, y_predict, rownames=[""], colnames=[""])
 print(cm_df.to_string(index=True, header=True), "\n")
