@@ -1,12 +1,12 @@
 import tkinter as tk
-from models_training import random_forest
+from models_training import best_model
 from feature_selector import select_features
 
 
-def detect_sqli():
+def detect_sqli(event=None):
     sentence = entry.get()
     features = select_features(sentence)
-    result = random_forest.predict([list(features.values())])
+    result = best_model.predict([list(features.values())])  # type: ignore
     if result[0] == 1:
         label.config(text="độc hại", fg="red")
     else:
@@ -23,6 +23,7 @@ entry = tk.Entry(root, font=("Arial", 14))
 entry.pack(pady=10)
 
 tk.Button(root, text="Phát hiện", font=("Arial", 14), command=detect_sqli).pack(pady=10)
+root.bind("<Return>", detect_sqli) # Nhấn Enter để phát hiện
 
 lableFrame = tk.LabelFrame(root, border=0)
 lableFrame.pack(pady=10)
