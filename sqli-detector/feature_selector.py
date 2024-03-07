@@ -1,10 +1,9 @@
-import pandas as pd
 from constant import (
     sql_keywords,
     special_characters,
     comment_symbols,
     escape_symbols,
-    wildcrad_symbols,
+    wildcard_symbols,
 )
 
 
@@ -22,7 +21,7 @@ def total_comment_symbols(s):
 
 
 def total_wildcard_symbols(s):
-    return sum([str(s).count(c) for c in wildcrad_symbols])
+    return sum([str(s).count(c) for c in wildcard_symbols])
 
 
 def total_escape_symbols(s):

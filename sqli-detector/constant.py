@@ -64,7 +64,7 @@ comment_symbols = [
     "#",
 ]
 
-wildcrad_symbols = [
+wildcard_symbols = [
     "%",
     "_",
     "[",
