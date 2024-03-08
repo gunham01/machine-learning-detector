@@ -50,8 +50,8 @@ def has_comment(s):
     return str(s).count("--") > 0
 
 
-def has_concatenation(s):
-    return "+" in str(s) or "||" in str(s)
+def count_concatenation(s):
+    return sum([str(s).count(c) for c in ["||", "+"]])
 
 
 def has_sleep_or_benchmark(s):
@@ -82,31 +82,27 @@ def select_features(s):
         # 2. Số lượng từ khóa SQL
         sql_keyword_count=sql_keyword_count,
         # 3. Tần suất từ khóa SQL
-        sql_keyword_freq=sql_keyword_count / s_length,
+        sql_keyword_freq=sql_keyword_count / s_length if s_length > 0 else 0,
         # 4. Số lượng ký tự đặc biệt
         special_char_count=special_char_count,
         # 5. Tần suất ký tự đặc biệt
-        special_char_freq=special_char_count / s_length,
+        special_char_freq=special_char_count / s_length if s_length > 0 else 0,
         # 6. Số lượng ký tự comment
         comment_char_count=count_comment_symbols(s),
         # 7. Số lượng ký tự wildcard
         wildcard_char_count=count_wildcard_symbols(s),
         # 8. Số lượng ký tự escape
         escape_char_count=count_escape_symbols(s),
-        # 9. Có chứa từ khóa UNION không
-        has_union=has_union(s),
-        # 10. Số lượng từ khóa UNION
+        # 9. Số lượng từ khóa UNION
         union_count=union_count(s),
-        # 11. Số lượng cột được chọn
+        # 10. Số lượng cột được chọn
         select_column_count=count_selected_column(s),
-        # 12. Có chứa comment không
-        has_comment=has_comment(s),
-        # 13. Có chứa phép nối chuỗi không
-        has_concatenation=has_concatenation(s),
-        # 14. Có chứa sleep không
+        # 12. Số lượng phép nối chuỗi không
+        concatenation_count=count_concatenation(s),
+        # 13. Có chứa sleep không
         has_sleep_or_brenchmark=has_sleep_or_benchmark(s),
-        # 15. Số lượng ký tự nháy đơn
+        # 14. Số lượng ký tự nháy đơn
         single_quote_count=count_single_quote(s),
-        # 16. Số lượng ký tự nháy kép
+        # 15. Số lượng ký tự nháy kép
         double_quote_count=count_double_quote(s),
     )
