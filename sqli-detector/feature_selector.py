@@ -29,10 +29,16 @@ def total_escape_symbols(s):
 
 
 def select_features(s):
+    strLength = len(s)
+    sql_keyword_count = total_sql_keyword_in_string(s)
+    special_char_count = total_special_characters(s)
     return dict(
-        sql_keyword=total_sql_keyword_in_string(s),
-        special_char=total_special_characters(s),
-        comment_char=total_comment_symbols(s),
-        wildcard_char=total_wildcard_symbols(s),
-        escape_char=total_escape_symbols(s),
+        length=strLength,
+        sql_keyword_count=sql_keyword_count,
+        sql_keyword_freq=sql_keyword_count / strLength,
+        special_char_count=special_char_count,
+        special_char_freq=special_char_count / strLength,
+        comment_char_count=total_comment_symbols(s),
+        wildcard_char_count=total_wildcard_symbols(s),
+        escape_char_count=total_escape_symbols(s),
     )
