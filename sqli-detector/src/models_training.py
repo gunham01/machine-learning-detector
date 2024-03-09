@@ -14,7 +14,7 @@ def join_all_except_last(arr):
 
 
 # 1. Đọc dataset
-filepath = "dataset/sqli.csv"
+filepath = "../dataset/sqli.csv"
 dataset = pd.read_csv(
     filepath,
     encoding="UTF-16",
