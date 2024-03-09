@@ -1,3 +1,4 @@
+import csv
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -8,12 +9,19 @@ from sklearn.tree import DecisionTreeClassifier
 from feature_selector import select_features
 
 
+def join_all_except_last(arr):
+    return [",".join(arr[:-1]), arr[-1]]
+
+
 # 1. Đọc dataset
 filepath = "dataset/sqli.csv"
 dataset = pd.read_csv(
     filepath,
     encoding="UTF-16",
     sep=",",
+    engine="python",
+    quoting=csv.QUOTE_NONE,
+    on_bad_lines=join_all_except_last,
 )
 
 # 2. Trích chọn đặc trưng

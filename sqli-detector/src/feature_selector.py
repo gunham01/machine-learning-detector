@@ -82,11 +82,11 @@ def select_features(s):
         # 2. Số lượng từ khóa SQL
         sql_keyword_count=sql_keyword_count,
         # 3. Tần suất từ khóa SQL
-        sql_keyword_freq=sql_keyword_count / s_length,
+        sql_keyword_freq=(sql_keyword_count / s_length) if s_length > 0 else 0,
         # 4. Số lượng ký tự đặc biệt
         special_char_count=special_char_count,
         # 5. Tần suất ký tự đặc biệt
-        special_char_freq=special_char_count / s_length,
+        special_char_freq=(special_char_count / s_length) if s_length > 0 else 0,
         # 6. Số lượng ký tự comment
         comment_char_count=count_comment_symbols(s),
         # 7. Số lượng ký tự wildcard
