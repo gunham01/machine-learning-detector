@@ -30,7 +30,7 @@ def count_escape_symbols(s):
 
 
 def has_union(s):
-    return str(s).lower().count("union") > 0
+    return int("union" in str(s).lower())
 
 
 def union_count(s):
@@ -47,21 +47,17 @@ def count_selected_column(s):
 
 
 def has_comment(s):
-    return str(s).count("--") > 0
+    return int("--" in str(s))
 
 
 def has_concatenation(s):
-    return "+" in str(s) or "||" in str(s)
+    return int("+" in str(s) or "||" in str(s))
 
 
 def has_sleep_or_benchmark(s):
     s_lower = s.lower() if s is str else str(s)
-    return (
-        s_lower.count("sleep")
-        or s_lower.count("benchmark")
-        or s_lower.count("waitfor delay")
-        or s_lower.count("pg_sleep")
-    )
+    sleep_function_names = ["sleep", "benchmark", "waitfor delay", "pg_sleep"]
+    return int(any(name in s_lower for name in sleep_function_names))
 
 
 def count_single_quote(s):

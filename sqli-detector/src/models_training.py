@@ -14,7 +14,7 @@ def join_all_except_last(arr):
 
 
 # 1. Đọc dataset
-filepath = "../dataset/sqli.csv"
+filepath = "../dataset/sqliv2.csv"
 dataset = pd.read_csv(
     filepath,
     encoding="UTF-16",
@@ -31,6 +31,7 @@ for index, row in dataset.iterrows():
     selected_features["label"] = row["Label"]
     features_list.append(selected_features)
 df = pd.DataFrame(features_list)
+df.to_csv("../dataset/selected_features.csv", index=False)
 
 # 3. Chia dataset thành tập train và tập test
 x_train, x_test, y_train, y_test = train_test_split(
