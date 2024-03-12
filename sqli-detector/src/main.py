@@ -20,7 +20,7 @@ def find_user(event=None):
         return
 
     should_detect_sqli = dotenv_values()["SHOULD_DETECT_SQLI"] == "1"
-    if bool(should_detect_sqli) and detect_sqli(username):
+    if should_detect_sqli and detect_sqli(username):
         user_list_title_label.config(text="Đầu vào chưa hợp lệ", fg="red")
         user_list_cotent_label.config(text="")
         return
