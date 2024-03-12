@@ -31,3 +31,4 @@ ENV/
 # OS generated files
 .DS_Store
 Thumbs.db
+sqli-detector/dataset/*feature*.csv
