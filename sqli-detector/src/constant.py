@@ -28,7 +28,7 @@ common_sql_functions_name = [
     "AVG(",
     "MIN(",
     "MAX(",
-    "CONVEVT(",
+    "CONVERT(",
     "CAST(",
     "SUBSTRING(",
     "SUBSTR(",

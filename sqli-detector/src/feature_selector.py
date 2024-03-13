@@ -81,8 +81,19 @@ def count_sql_env_variables(s):
     s_lower = s.lower() if s is str else str(s)
     return sum([s_lower.count(name) for name in sql_env_variables])
 
+
 def has_nested_select(s):
     return int("SELECT" in str(s) and "FROM" in str(s))
+
+
+def has_boolean_based_blind(s):
+    patterns = [
+        r"\bAND\b\s+\d+=\d+",  # Matches "AND 1=1" or similar patterns
+        r"\bOR\b\s+\d+=\d+",  # Matches "OR 1=1" or similar patterns
+        r"\bNOT\b\s+\d+=\d+",  # Matches "NOT 1=1" or similar patterns
+        # Add more patterns as needed based on known attack vectors
+    ]
+    return int(any(re.search(pattern, str(s), re.IGNORECASE) for pattern in patterns))
 
 
 def select_features(s):
@@ -126,4 +137,6 @@ def select_features(s):
         common_sql_function_count=count_common_sql_function_names(s),
         # 18. Số lượng biến môi trường SQL
         sql_env_variable_count=count_sql_env_variables(s),
+        # 19. Chứa pattern n=n hoặc n=m của trong boolean-based blind không
+        has_boolean_based_blind=has_boolean_based_blind(s),
     )
