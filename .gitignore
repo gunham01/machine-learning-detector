@@ -32,3 +32,4 @@ ENV/
 .DS_Store
 Thumbs.db
 sqli-detector/dataset/*feature*.csv
+sql-detector/src/.env
