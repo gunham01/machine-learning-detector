@@ -8,7 +8,8 @@
 -   scikit-learn
 -   mysql-connector-python
 -   pandas
--   env
+-   python-dotenv
+-   sqlparse
 
 ### Thiết lập trước khi chạy app
 
