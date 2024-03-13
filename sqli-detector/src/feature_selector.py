@@ -1,6 +1,10 @@
 import re
+
+from numpy import s_
 from constant import (
     sql_keywords,
+    common_sql_functions_name,
+    sql_env_variables,
     special_characters,
     comment_symbols,
     escape_symbols,
@@ -68,6 +72,19 @@ def count_double_quote(s):
     return str(s).count('"')
 
 
+def count_common_sql_function_names(s):
+    s_lower = s.lower() if s is str else str(s)
+    return sum([s_lower.count(name) for name in common_sql_functions_name])
+
+
+def count_sql_env_variables(s):
+    s_lower = s.lower() if s is str else str(s)
+    return sum([s_lower.count(name) for name in sql_env_variables])
+
+def has_nested_select(s):
+    return int("SELECT" in str(s) and "FROM" in str(s))
+
+
 def select_features(s):
     s_length = len(str(s))
     sql_keyword_count = count_sql_keyword_in_string(s)
@@ -105,4 +122,8 @@ def select_features(s):
         single_quote_count=count_single_quote(s),
         # 16. Số lượng ký tự nháy kép
         double_quote_count=count_double_quote(s),
+        # 17. Số lượng hàm SQL phổ biến
+        common_sql_function_count=count_common_sql_function_names(s),
+        # 18. Số lượng biến môi trường SQL
+        sql_env_variable_count=count_sql_env_variables(s),
     )

@@ -85,7 +85,7 @@ y_test = testing_df["label"]
 def score_model(model):
     y_predict = model.predict(x_test)
     cm_df = pd.crosstab(y_test, y_predict, rownames=[""], colnames=[""])
-    printable_cm = cm_df.to_string(index=True, header=True)
+    printable_cm = cm_df.to_string()
     accuracy = accuracy_score(y_test, y_predict)
     precision = precision_score(y_test, y_predict)
     recall = recall_score(y_test, y_predict)

@@ -21,6 +21,31 @@ sql_keywords = [
     "DATABASE",
 ]
 
+common_sql_functions_name = [
+    "CONCAT(",
+    "COUNT(",
+    "SUM(",
+    "AVG(",
+    "MIN(",
+    "MAX(",
+    "CONVEVT(",
+    "CAST(",
+    "SUBSTRING(",
+    "SUBSTR(",
+    "ASCII(",
+    "RAISEERROR(",
+    "SIGNAL(",
+    "ERROR(",
+]
+
+sql_env_variables = [
+    "@@VERSION",
+    "@@OSVERSION",
+    "@@SERVERNAME",
+    "@@HOSTNAME",
+    "DATABASE()",
+]
+
 special_characters = [
     "!",
     "@",
