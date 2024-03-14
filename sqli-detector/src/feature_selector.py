@@ -86,9 +86,9 @@ def has_nested_select(s):
 
 def has_boolean_based_blind(s):
     patterns = [
-        r"\bAND\b\s+\d+=\d+",  # Matches "AND 1=1" or similar patterns
-        r"\bOR\b\s+\d+=\d+",  # Matches "OR 1=1" or similar patterns
-        r"\bNOT\b\s+\d+=\d+",  # Matches "NOT 1=1" or similar patterns
+        r"\bAND\b\s+\d+\s*=\s*\d+",  # Matches "AND 1=1" or similar patterns
+        r"\bOR\b\s+\d+\s*=\s\d+",  # Matches "OR 1=1" or similar patterns
+        r"\bNOT\b\s+\d+\s*=\s\d+",  # Matches "NOT 1=1" or similar patterns
         # Add more patterns as needed based on known attack vectors
     ]
     return int(any(re.search(pattern, str(s), re.IGNORECASE) for pattern in patterns))
