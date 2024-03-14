@@ -1,6 +1,4 @@
 import re
-
-from numpy import s_
 from constant import (
     sql_keywords,
     common_sql_functions_name,
@@ -100,17 +98,19 @@ def select_features(s):
     s_length = len(str(s))
     sql_keyword_count = count_sql_keyword_in_string(s)
     special_char_count = count_special_characters(s)
+    sql_keyword_freq = round(sql_keyword_count / s_length, 2) if s_length > 0 else 0
+    special_char_freq = round(special_char_count / s_length, 6) if s_length > 0 else 0
     return dict(
         # 1. Độ dài chuỗi
         length=s_length,
         # 2. Số lượng từ khóa SQL
         sql_keyword_count=sql_keyword_count,
         # 3. Tần suất từ khóa SQL
-        sql_keyword_freq=(sql_keyword_count / s_length) if s_length > 0 else 0,
+        sql_keyword_freq=sql_keyword_freq,
         # 4. Số lượng ký tự đặc biệt
         special_char_count=special_char_count,
         # 5. Tần suất ký tự đặc biệt
-        special_char_freq=(special_char_count / s_length) if s_length > 0 else 0,
+        special_char_freq=special_char_freq,
         # 6. Số lượng ký tự comment
         comment_char_count=count_comment_symbols(s),
         # 7. Số lượng ký tự wildcard

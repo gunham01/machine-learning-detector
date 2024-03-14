@@ -28,6 +28,7 @@ def extract_feature_from_csv_filepath(filepath):
         sep=",",
         engine="python",
         quoting=csv.QUOTE_NONE,
+        na_filter=False,
         on_bad_lines=join_all_except_last,
     )
     # Trích xuất các đặc trưng
