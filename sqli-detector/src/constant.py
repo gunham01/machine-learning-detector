@@ -107,3 +107,18 @@ escape_symbols = [
     "\f",
     "\v",
 ]
+
+sql_network_comamnds = [
+    "xp_cmdshell",
+    "xp_regwrite",
+    "xp_regread",
+    "OPENROWSET",
+    "OPENDATASOURCE",
+    "OPENQUERY",
+    "BULK INSERT",
+    "NET USE",
+    "sp_OACreate",
+    "sp_OAMethod",
+    "sp_OAGetProperty",
+    "sp_OADestroy",
+]

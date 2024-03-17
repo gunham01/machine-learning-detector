@@ -7,6 +7,7 @@ from constant import (
     comment_symbols,
     escape_symbols,
     wildcard_symbols,
+    sql_network_comamnds,
 )
 
 
@@ -94,6 +95,10 @@ def has_boolean_based_blind(s):
     return int(any(re.search(pattern, str(s), re.IGNORECASE) for pattern in patterns))
 
 
+def has_sql_network_comamnd(s):
+    return int(any(command in str(s).lower() for command in sql_network_comamnds))
+
+
 def select_features(s):
     s_length = len(str(s))
     sql_keyword_count = count_sql_keyword_in_string(s)
@@ -117,26 +122,24 @@ def select_features(s):
         wildcard_char_count=count_wildcard_symbols(s),
         # 8. Số lượng ký tự escape
         escape_char_count=count_escape_symbols(s),
-        # 9. Có chứa từ khóa UNION không
-        has_union=has_union(s),
-        # 10. Số lượng từ khóa UNION
+        # 9. Số lượng từ khóa UNION
         union_count=union_count(s),
-        # 11. Số lượng cột được chọn
+        # 10. Số lượng cột được chọn
         select_column_count=count_selected_column(s),
-        # 12. Có chứa comment không
-        has_comment=has_comment(s),
-        # 13. Có chứa phép nối chuỗi không
+        # 11. Có chứa phép nối chuỗi không
         has_concatenation=has_concatenation(s),
-        # 14. Có chứa sleep không
+        # 12. Có chứa sleep không
         has_sleep_or_brenchmark=has_sleep_or_benchmark(s),
-        # 15. Số lượng ký tự nháy đơn
+        # 13. Số lượng ký tự nháy đơn
         single_quote_count=count_single_quote(s),
-        # 16. Số lượng ký tự nháy kép
+        # 14. Số lượng ký tự nháy kép
         double_quote_count=count_double_quote(s),
-        # 17. Số lượng hàm SQL phổ biến
+        # 15. Số lượng hàm SQL phổ biến
         common_sql_function_count=count_common_sql_function_names(s),
-        # 18. Số lượng biến môi trường SQL
+        # 16. Số lượng biến môi trường SQL
         sql_env_variable_count=count_sql_env_variables(s),
-        # 19. Chứa pattern n=n hoặc n=m của trong boolean-based blind không
+        # 17. Chứa pattern n=n hoặc n=m của trong boolean-based blind không
         has_boolean_based_blind=has_boolean_based_blind(s),
+        # 18. Có chứa câu lệnh SQL network không
+        has_network_comamnd=has_sql_network_comamnd(s),
     )

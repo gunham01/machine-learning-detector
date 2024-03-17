@@ -62,7 +62,7 @@ y_train = df["label"]
 models = {
     "Naive Bayes": GaussianNB(),
     "KNN": KNeighborsClassifier(n_neighbors=3),
-    "Logistic Regression": LogisticRegression(),
+    "Logistic Regression": LogisticRegression(max_iter=1000),
     "Decission Tree": DecisionTreeClassifier(),
     "Random Forest": RandomForestClassifier(n_estimators=80),
 }
