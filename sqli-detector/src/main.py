@@ -1,4 +1,5 @@
 from dotenv import load_dotenv, dotenv_values
+import pandas as pd
 
 # Cảnh báo nếu chưa có file .env
 load_dotenv(verbose=True)
@@ -36,7 +37,7 @@ def find_user(event=None):
 
 def detect_sqli(content: str) -> bool:
     features = select_features(content)
-    result = best_model.predict([list(features.values())])  # type: ignore
+    result = best_model.predict(pd.DataFrame([features]))
     return result[0] == 1
 
 
