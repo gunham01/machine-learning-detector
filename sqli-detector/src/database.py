@@ -1,4 +1,3 @@
-from dotenv import dotenv_values
 import mysql.connector
 
 def get_users_by_username(username):
