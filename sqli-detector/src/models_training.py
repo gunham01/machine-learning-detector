@@ -32,12 +32,13 @@ def extract_feature_from_csv_filepath(filepath):
         on_bad_lines=join_all_except_last,
     )
     # Trích xuất các đặc trưng
+    extracted_features = []
     for _, row in training_dataset.iterrows():
         selected_features = select_features(row["Sentence"])
         selected_features["label"] = row["Label"]
-        features_list.append(selected_features)
+        extracted_features.append(selected_features)
 
-    return features_list
+    return extracted_features
 
 
 # 1. Đọc và trích xuất các đặc trưng từ các dataset
@@ -47,7 +48,8 @@ training_dataset_filepaths = [
 features_filepath = "../dataset/selected_features.csv"
 features_list = []
 for filepath in training_dataset_filepaths:
-    features_list.extend(extract_feature_from_csv_filepath(filepath))
+    extracted_features = extract_feature_from_csv_filepath(filepath)
+    features_list.extend(extracted_features)
 
 # 2. Lưu các đặc trưng đã trích xuất vào file csv
 df = pd.DataFrame(features_list)
