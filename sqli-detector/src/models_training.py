@@ -64,9 +64,9 @@ y_train = df["label"]
 models = {
     "Naive Bayes": GaussianNB(),
     "KNN": KNeighborsClassifier(n_neighbors=3),
-    "Logistic Regression": LogisticRegression(max_iter=1000),
-    "Decission Tree": DecisionTreeClassifier(),
-    "Random Forest": RandomForestClassifier(n_estimators=80),
+    "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42),
+    "Decission Tree": DecisionTreeClassifier(random_state=42),
+    "Random Forest": RandomForestClassifier(n_estimators=80, random_state=42),
 }
 for model in models.values():
     model.fit(x_train, y_train)
