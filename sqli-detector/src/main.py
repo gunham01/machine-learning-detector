@@ -69,7 +69,6 @@ buttons_frame.pack(pady=8)
 tk.Button(buttons_frame, text="Phát hiện", font=arial_14, command=on_detect_sqli).pack(
     side="left", padx=8
 )
-root.bind("<Return>", on_find_user)  # Nhấn Enter để phát hiện
 tk.Button(buttons_frame, text="Tìm kiếm", font=arial_14, command=on_find_user).pack(
     side="left", padx=8
 )
