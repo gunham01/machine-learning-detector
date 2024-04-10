@@ -19,7 +19,12 @@ def on_detect(_=None):
 
 def on_find_users(_=None):
     username = entry.get()
-    users = get_users_by_username(username)
+    try:
+        users = get_users_by_username(username)
+    except Exception as e:
+        result_label.config(text=str(e), fg="red")
+        return
+    
     users_str = [str(user) for user in users]
     if users:
         result_label.config(text="\n".join(users_str), fg="green")
@@ -40,7 +45,7 @@ def clear_input():
 
 root = tk.Tk()
 root.title("Phát hiện SQLi")
-root.geometry("400x300")
+root.geometry("400x350")
 
 tk.Label(root, text="Nhập query", font=arial_14).pack(pady=8, padx=4)
 
@@ -59,7 +64,7 @@ tk.Button(buttons_frame, text="Xoá", font=arial_14, command=clear_input).pack(
     side="left", padx=8
 )
 
-result_label = tk.Label(root, font=arial_14)
+result_label = tk.Label(root, font=arial_14, wraplength=280)
 result_label.pack(pady=8)
 
 root.mainloop()
