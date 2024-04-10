@@ -4,6 +4,7 @@ import tkinter as tk
 from models_training import best_model
 from feature_selector import select_features
 from database import get_users_by_username
+from mysql.connector import Error
 
 light_gray = "#a8a4a3"
 arial_14 = ("Arial", 14)
@@ -21,10 +22,10 @@ def on_find_users(_=None):
     username = entry.get()
     try:
         users = get_users_by_username(username)
-    except Exception as e:
-        result_label.config(text=str(e), fg="red")
+    except Error as e:
+        result_label.config(text=str(e.msg), fg="red")
         return
-    
+
     users_str = [str(user) for user in users]
     if users:
         result_label.config(text="\n".join(users_str), fg="green")
@@ -64,7 +65,7 @@ tk.Button(buttons_frame, text="Xoá", font=arial_14, command=clear_input).pack(
     side="left", padx=8
 )
 
-result_label = tk.Label(root, font=arial_14, wraplength=280)
+result_label = tk.Label(root, font=arial_14, wraplength=320)
 result_label.pack(pady=8)
 
 root.mainloop()
