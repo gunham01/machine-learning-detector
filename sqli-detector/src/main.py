@@ -23,7 +23,8 @@ def on_find_users(_=None):
     try:
         users = get_users_by_username(username)
     except Error as e:
-        result_label.config(text=str(e.msg), fg="red")
+        # result_label.config(text=str(e.msg), fg="red")
+        result_label.config(text="Không tìm thấy", fg="red")
         return
 
     users_str = [str(user) for user in users]
