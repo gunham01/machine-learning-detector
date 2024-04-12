@@ -6,6 +6,7 @@ from sklearn.naive_bayes import CategoricalNB, GaussianNB, MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from feature_selector import select_features
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -56,9 +57,19 @@ df = pd.DataFrame(features_list)
 df.to_csv(features_filepath, index=False)
 
 # 3. Huấn luyện các mô hình
-# Tạo tập huấn luyện
+# Tạo tập huấn luyện với đẩy đủ đặc trưng
 x_train = df.drop("label", axis=1)
 y_train = df["label"]
+
+# Lọc các đặc trưng không quan trọng
+k_best = SelectKBest(score_func=mutual_info_classif, k=10)
+x_new = k_best.fit(x_train, y_train)
+selected_indices = k_best.get_support(indices=True)
+
+# Lưu tập huấn luyện với những đặc trưng đã chọn vào file csv
+x_train = x_train.iloc[:, selected_indices]
+train_data = pd.concat([x_train, y_train], axis=1)
+train_data.to_csv("../dataset/selected_features_short.csv", index=False)
 
 
 models = {
@@ -93,7 +104,9 @@ testing_dataset_features_list = extract_feature_from_csv_filepath(
 )
 testing_df = pd.DataFrame(testing_dataset_features_list)
 x_test = testing_df.drop("label", axis=1)
+x_test = x_test[x_train.columns]
 y_test = testing_df["label"]
+
 
 
 # Hàm đánh giá 1 mô hình bằng ma trận
