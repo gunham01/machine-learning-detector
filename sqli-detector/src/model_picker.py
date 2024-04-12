@@ -1,4 +1,5 @@
 import csv
+import math
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -41,71 +42,64 @@ for filepath in training_dataset_filepaths:
     features_list.extend(extracted_features)
 
 df = pd.DataFrame(features_list)
-df.to_csv(features_filepath, index=False)
+# df.to_csv(features_filepath, index=False)
 
 x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
+estimators = {
+    # "Naive Bayes": {
+    #     "model": MultinomialNB(),
+    #     "params": {
+    #         "alpha": [0.1] + list(x / 2 for x in range(1, 11)),
+    #         "fit_prior": [True, False],
+    #     },
+    # },
+    # "KNN": {
+    #     "model": KNeighborsClassifier(),
+    #     "params": {
+    #         "n_neighbors": list(range(1, 51)),
+    #         "weights": ["uniform", "distance"],
+    #     },
+    # },
+    # "Logistic Regression": {
+    #     "model": LogisticRegression(),
+    #     "params": {
+    #         "C": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
+    #         "penalty": ["l1", "l2", "elasticnet"],
+    #         "max_iter": [1000],
+    #     },
+    # },
+    # "Decision Tree": {
+    #     "model": DecisionTreeClassifier(),
+    #     "params": {
+    #         "criterion": ["gini", "entropy"],
+    #         "max_depth": np.arange(3, 15),
+    #     },
+    # },
+    "Random Forest": {
+        "model": RandomForestClassifier(),
+        "params": {
+            "n_estimators": list(x * 10 for x in range(1, 11)),
+            "bootstrap": [True, False],
+            "min_samples_leaf": list(x for x in range(1, 11)),
+        },
+    },
+}
+
 shuffle_split = ShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
 
-grid_search = GridSearchCV(
-    estimator=LogisticRegression(),
-    param_grid={
-        "C": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
-        "penalty": ["l1", "l2", "elasticnet"],
-        "max_iter": [1000],
-    },
-    scoring="f1",
-    cv=shuffle_split,
-    verbose=3,
-    n_jobs=-1,
-)
-# grid_search = GridSearchCV(
-#     estimator=DecisionTreeClassifier(),
-#     param_grid={
-#         "criterion": ["gini", "entropy"],
-#         "max_depth": np.arange(3, 15),
-#         "random_state": [42],
-#     },
-#     scoring="f1",
-#     cv=shuffle_split,
-#     verbose=3,
-#     n_jobs=-1,
-# )
-# grid_search = GridSearchCV(
-#     estimator=KNeighborsClassifier(),
-#     param_grid={
-#         "n_neighbors": list(range(1, 51)),
-#         "weights": ["uniform", "distance"],
-#     },
-#     scoring="f1",
-#     cv=shuffle_split,
-#     verbose=3,
-#     n_jobs=-1,
-# )
-# grid_search = GridSearchCV(
-#     estimator=MultinomialNB(),
-#     param_grid={
-#         "alpha": [0.1] + list(x / 2 for x in range(1, 11)),
-#         "fit_prior": [True, False],
-#     },
-#     scoring="f1",
-#     cv=shuffle_split,
-#     verbose=3,
-#     n_jobs=-1,
-# )
-# grid_search = GridSearchCV(
-#     estimator=RandomForestClassifier(),
-#     param_grid={
-#         "n_estimators": list(x * 10 for x in range(1, 51)),
-#         "max_depth": [None] + list(x * 10 for x in range(1, 11)),
-#     },
-#     scoring="f1",
-#     cv=shuffle_split,
-#     verbose=1,
-#     n_jobs=-1,
-# )
-grid_search.fit(x_train, y_train)
+for estimatorName in estimators:
+    estimator = estimators[estimatorName]
+    grid_search = GridSearchCV(
+        estimator=estimator["model"],
+        param_grid=estimator["params"],
+        scoring="f1",
+        cv=shuffle_split,
+        verbose=3,
+        n_jobs=-1,
+    )
+    grid_search.fit(x_train, y_train)
 
-best_params = grid_search.best_params_
-print(best_params)
+    best_params = grid_search.best_params_
+    print(f"{estimatorName}: {best_params}")

@@ -63,17 +63,23 @@ y_train = df["label"]
 
 models = {
     "Naive Bayes": MultinomialNB(alpha=0.5, fit_prior=True),
-    "KNN": KNeighborsClassifier(n_neighbors=2, weights="distance"),
-    "Logistic Regression": LogisticRegression(C=10, penalty='l2', max_iter=1000, random_state=42),
+    "KNN": KNeighborsClassifier(n_neighbors=1),
+    "Logistic Regression": LogisticRegression(
+        C=10, penalty="l2", max_iter=1000, random_state=42
+    ),
     "Decission Tree": DecisionTreeClassifier(
-        random_state=42, criterion="entropy", max_depth=10
+        random_state=42,
+        criterion="gini",
+        max_depth=13,
     ),
     "Random Forest": RandomForestClassifier(
         n_estimators=10,
-        max_depth=100,
+        n_jobs=-1,
+        bootstrap=True,
         random_state=42,
     ),
 }
+
 
 for model in models.values():
     model.fit(x_train, y_train)
