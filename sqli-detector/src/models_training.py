@@ -62,12 +62,12 @@ x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
 # Lọc các đặc trưng không quan trọng
-k_best = SelectKBest(score_func=mutual_info_classif, k=10)
+k_best = SelectKBest(score_func=mutual_info_classif, k=12)
 x_new = k_best.fit(x_train, y_train)
-selected_indices = k_best.get_support(indices=True)
+selected_features_indices = k_best.get_support(indices=True)
 
 # Lưu tập huấn luyện với những đặc trưng đã chọn vào file csv
-x_train = x_train.iloc[:, selected_indices]
+x_train = x_train.iloc[:, selected_features_indices]
 train_data = pd.concat([x_train, y_train], axis=1)
 train_data.to_csv("../dataset/selected_features_short.csv", index=False)
 
@@ -106,7 +106,6 @@ testing_df = pd.DataFrame(testing_dataset_features_list)
 x_test = testing_df.drop("label", axis=1)
 x_test = x_test[x_train.columns]
 y_test = testing_df["label"]
-
 
 
 # Hàm đánh giá 1 mô hình bằng ma trận

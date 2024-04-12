@@ -5,6 +5,7 @@ from models_training import best_model
 from feature_selector import select_features
 from database import get_users_by_username
 from mysql.connector import Error
+from models_training import selected_features_indices
 
 light_gray = "#a8a4a3"
 arial_14 = ("Arial", 14)
@@ -36,7 +37,8 @@ def on_find_users(_=None):
 
 def detect_sqli(content: str) -> bool:
     features = select_features(content)
-    result = best_model.predict(pd.DataFrame([features]))
+    x_predict = pd.DataFrame([features]).iloc[:, selected_features_indices]
+    result = best_model.predict(x_predict)
     return result[0] == 1
 
 
