@@ -1,13 +1,7 @@
 import csv
-import math
-import numpy as np
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, ShuffleSplit
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import CategoricalNB, GaussianNB, MultinomialNB
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
 from feature_selector import select_features
 
 

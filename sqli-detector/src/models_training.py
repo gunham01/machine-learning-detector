@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import CategoricalNB, GaussianNB, MultinomialNB
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from feature_selector import select_features
@@ -76,7 +76,7 @@ models = {
     "Naive Bayes": MultinomialNB(alpha=0.5, fit_prior=True),
     "KNN": KNeighborsClassifier(n_neighbors=1),
     "Logistic Regression": LogisticRegression(
-        C=10, penalty="l2", max_iter=1000, random_state=42
+        C=10, penalty="l2", max_iter=400, random_state=42
     ),
     "Decission Tree": DecisionTreeClassifier(
         random_state=42,
