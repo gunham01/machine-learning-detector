@@ -6,7 +6,9 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from feature_selector import select_features
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
+from sklearn.feature_selection import (
+    SequentialFeatureSelector as SFS,
+)
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -62,7 +64,13 @@ x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
 # Lọc các đặc trưng không quan trọng
-k_best = SelectKBest(score_func=mutual_info_classif, k=12)
+k_best = SFS(
+    estimator=KNeighborsClassifier(n_neighbors=3),
+    n_features_to_select=10,
+    direction="forward",
+    scoring="f1_score",
+    n_jobs=-1,
+)
 x_new = k_best.fit(x_train, y_train)
 selected_features_indices = k_best.get_support(indices=True)
 
@@ -73,20 +81,15 @@ train_data.to_csv("../dataset/selected_features_short.csv", index=False)
 
 
 models = {
-    "Naive Bayes": MultinomialNB(alpha=0.5, fit_prior=True),
-    "KNN": KNeighborsClassifier(n_neighbors=1),
-    "Logistic Regression": LogisticRegression(
-        C=10, penalty="l2", max_iter=400, random_state=42
-    ),
+    "Naive Bayes": MultinomialNB(),
+    "KNN": KNeighborsClassifier(n_neighbors=3),
+    "Logistic Regression": LogisticRegression(max_iter=400, random_state=42),
     "Decission Tree": DecisionTreeClassifier(
         random_state=42,
-        criterion="gini",
-        max_depth=13,
     ),
     "Random Forest": RandomForestClassifier(
         n_estimators=10,
         n_jobs=-1,
-        bootstrap=True,
         random_state=42,
     ),
 }
