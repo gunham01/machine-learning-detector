@@ -29,11 +29,8 @@ def extract_features_from_filepath(filepath):
     return extracted_features
 
 def read_dataset(filepath, csv_to_write=None):
-    features_list = []
-    extracted_features = extract_features_from_filepath(filepath)
-    features_list.extend(extracted_features)
+    features_list = extract_features_from_filepath(filepath)
 
-    # 2. Lưu các đặc trưng đã trích xuất vào file csv
     df = pd.DataFrame(features_list)
     if csv_to_write is not None:
         df.to_csv(csv_to_write, index=False)
@@ -50,13 +47,10 @@ def read_datasets(filepaths, csv_to_write=None):
         extracted_features = extract_features_from_filepath(filepath)
         features_list.extend(extracted_features)
 
-    # 2. Lưu các đặc trưng đã trích xuất vào file csv
     df = pd.DataFrame(features_list)
     if csv_to_write is not None:
         df.to_csv(csv_to_write, index=False)
 
-    # 3. Huấn luyện các mô hình
-    # Tạo tập huấn luyện với đẩy đủ đặc trưng
     x_set = df.drop("label", axis=1)
     y_set = df["label"]
 
