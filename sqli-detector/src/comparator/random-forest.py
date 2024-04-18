@@ -1,13 +1,15 @@
 import sys
 import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score, make_scorer
 from sklearn.model_selection import KFold, cross_val_score
 
 sys.path.append("../")
-from dataset_reader import read_datasets
+from dataset_reader import extract_features_from_dataset, split_features_to_data_and_label
 
-x_train, y_train = read_datasets(["../../dataset/sqli.csv"])
+features = extract_features_from_dataset("../../dataset/sqli.csv")
+x_train, y_train = split_features_to_data_and_label(features)
 
 best_i = best_f1 = 0
 for i in range(10, 101):

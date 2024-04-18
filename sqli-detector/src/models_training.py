@@ -1,13 +1,15 @@
-import csv
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from feature_selector import select_features
 from sklearn.feature_selection import (
     SequentialFeatureSelector as SFS,
+)
+from dataset_reader import (
+    extract_features_from_dataset,
+    extract_features_from_datasets,
 )
 from sklearn.metrics import (
     accuracy_score,
@@ -17,42 +19,12 @@ from sklearn.metrics import (
 )
 
 
-# Hàm join tất cả các cột ngoại trừ cột cuối cùng
-def join_all_except_last(arr):
-    return [",".join(arr[:-1]), arr[-1]]
-
-
-# Hàm trích xuất các đặc trưng từ dataset trong file csv
-def extract_feature_from_csv_filepath(filepath):
-    # Đọc dataset
-    training_dataset = pd.read_csv(
-        filepath,
-        encoding="UTF-16",
-        sep=",",
-        engine="python",
-        quoting=csv.QUOTE_NONE,
-        na_filter=False,
-        on_bad_lines=join_all_except_last,
-    )
-    # Trích xuất các đặc trưng
-    extracted_features = []
-    for _, row in training_dataset.iterrows():
-        selected_features = select_features(row["Sentence"])
-        selected_features["label"] = row["Label"]
-        extracted_features.append(selected_features)
-
-    return extracted_features
-
-
 # 1. Đọc và trích xuất các đặc trưng từ các dataset
 training_dataset_filepaths = [
     "../dataset/sqliv2.csv",
 ]
 features_filepath = "../dataset/selected_features.csv"
-features_list = []
-for filepath in training_dataset_filepaths:
-    extracted_features = extract_feature_from_csv_filepath(filepath)
-    features_list.extend(extracted_features)
+features_list = extract_features_from_datasets(training_dataset_filepaths)
 
 # 2. Lưu các đặc trưng đã trích xuất vào file csv
 df = pd.DataFrame(features_list)
@@ -63,16 +35,19 @@ df.to_csv(features_filepath, index=False)
 x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
-# Lọc các đặc trưng không quan trọng
+# Lọc các đặc trưng ít quan trọng
 sfs = SFS(
     estimator=KNeighborsClassifier(n_neighbors=3),
     n_features_to_select=10,
     direction="forward",
-    scoring="f1_score",
+    scoring="f1",
     n_jobs=-1,
+    cv=10,
 )
 x_new = sfs.fit(x_train, y_train)
 selected_features_indices = sfs.get_support(indices=True)
+selected_feautures_names = x_train.columns[selected_features_indices]
+print('Selected features: ', selected_feautures_names)
 
 # Lưu tập huấn luyện với những đặc trưng đã chọn vào file csv
 x_train = x_train.iloc[:, selected_features_indices]
@@ -102,9 +77,7 @@ for model in models.values():
 # 5. Đánh giá các mô hình bằng ma trận nhầm lẫn, accuracy, precision, recall, và F1 score
 # Tạo tập kiểm thử
 testing_dataset_filepath = "../dataset/sqli.csv"
-testing_dataset_features_list = extract_feature_from_csv_filepath(
-    testing_dataset_filepath
-)
+testing_dataset_features_list = extract_features_from_dataset(testing_dataset_filepath)
 testing_df = pd.DataFrame(testing_dataset_features_list)
 x_test = testing_df.drop("label", axis=1)
 x_test = x_test[x_train.columns]

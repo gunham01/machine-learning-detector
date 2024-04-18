@@ -8,7 +8,7 @@ def join_all_except_last(arr):
 
 
 # Hàm trích xuất các đặc trưng từ dataset trong file csv
-def extract_features_from_filepath(filepath):
+def extract_features_from_dataset(filepath: str):
     # Đọc dataset
     training_dataset = pd.read_csv(
         filepath,
@@ -28,30 +28,29 @@ def extract_features_from_filepath(filepath):
 
     return extracted_features
 
-def read_dataset(filepath, csv_to_write=None):
-    features_list = extract_features_from_filepath(filepath)
 
-    df = pd.DataFrame(features_list)
-    if csv_to_write is not None:
-        df.to_csv(csv_to_write, index=False)
+def read_dataset(filepath):
+    return pd.read_csv(
+        filepath,
+        encoding="UTF-16",
+        sep=",",
+        engine="python",
+        quoting=csv.QUOTE_NONE,
+        na_filter=False,
+        on_bad_lines=join_all_except_last,
+    )
 
-    x_set = df.drop("label", axis=1)
-    y_set = df["label"]
-
-    return x_set, y_set
 
 # Hàm trích xuất các đặc trưng từ nhiều dataset
-def read_datasets(filepaths, csv_to_write=None):
+def extract_features_from_datasets(filepaths: list[str]):
     features_list = []
     for filepath in filepaths:
-        extracted_features = extract_features_from_filepath(filepath)
+        extracted_features = extract_features_from_dataset(filepath)
         features_list.extend(extracted_features)
+    return features_list
 
+def split_features_to_data_and_label(features_list):
     df = pd.DataFrame(features_list)
-    if csv_to_write is not None:
-        df.to_csv(csv_to_write, index=False)
-
-    x_set = df.drop("label", axis=1)
-    y_set = df["label"]
-
-    return x_set, y_set
+    x = df.drop("label", axis=1)
+    y = df["label"]
+    return x, y
