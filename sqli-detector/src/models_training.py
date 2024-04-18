@@ -64,15 +64,15 @@ x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
 # Lọc các đặc trưng không quan trọng
-k_best = SFS(
+sfs = SFS(
     estimator=KNeighborsClassifier(n_neighbors=3),
     n_features_to_select=10,
     direction="forward",
     scoring="f1_score",
     n_jobs=-1,
 )
-x_new = k_best.fit(x_train, y_train)
-selected_features_indices = k_best.get_support(indices=True)
+x_new = sfs.fit(x_train, y_train)
+selected_features_indices = sfs.get_support(indices=True)
 
 # Lưu tập huấn luyện với những đặc trưng đã chọn vào file csv
 x_train = x_train.iloc[:, selected_features_indices]
