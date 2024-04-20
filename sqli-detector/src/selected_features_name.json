@@ -1,0 +1,1 @@
+["length", "sql_keyword_freq", "special_char_count", "special_char_freq", "comment_char_count", "wildcard_char_count", "union_count", "single_quote_count", "double_quote_count", "sql_env_variable_count", "has_boolean_based_blind", "has_network_comamnd"]

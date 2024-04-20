@@ -25,6 +25,8 @@ sfs = SFS(
 
 x_new = sfs.fit(x_train, y_train)
 selected_features_indices = sfs.get_support(indices=True)
-selected_feautures_names = x_train.columns[selected_features_indices]
+selected_features_names = x_train.columns[selected_features_indices]
 with open("selected_features_index.json", "w") as file:
     json.dump(selected_features_indices.tolist(), file)
+with open("selected_features_name.json", "w") as file:
+    json.dump(selected_features_names.tolist(), file)
