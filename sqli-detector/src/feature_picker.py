@@ -6,14 +6,14 @@ from dataset_reader import (
     split_features_to_data_and_label,
 )
 from sklearn.feature_selection import (
-    SequentialFeatureSelector as SFS,
+    SequentialFeatureSelector,
 )
 
 features = extract_features_from_dataset("../dataset/sqli.csv")
 x_train, y_train = split_features_to_data_and_label(features)
 
 # Lọc các đặc trưng ít quan trọng
-sfs = SFS(
+sfs = SequentialFeatureSelector(
     estimator=RandomForestClassifier(n_estimators=94, n_jobs=-1, random_state=42),
     n_features_to_select=12,
     # direction="forward",
