@@ -12,7 +12,7 @@ features = extract_features_from_dataset("../../dataset/sqli.csv")
 x_train, y_train = split_features_to_data_and_label(features)
 
 best_i = best_f1 = 0
-for i in range(10, 101):
+for i in range(100, 201):
     model = RandomForestClassifier(n_estimators=i, n_jobs=-1, random_state=42)
     results = cross_val_score(
         model,

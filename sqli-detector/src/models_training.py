@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -35,19 +36,7 @@ df.to_csv(features_filepath, index=False)
 x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
-# Lọc các đặc trưng ít quan trọng
-sfs = SFS(
-    estimator=KNeighborsClassifier(n_neighbors=3),
-    n_features_to_select=10,
-    direction="forward",
-    scoring="f1",
-    n_jobs=-1,
-    cv=10,
-)
-x_new = sfs.fit(x_train, y_train)
-selected_features_indices = sfs.get_support(indices=True)
-selected_feautures_names = x_train.columns[selected_features_indices]
-print('Selected features: ', selected_feautures_names)
+selected_features_indices = json.load(open("selected_features_index.json"))
 
 # Lưu tập huấn luyện với những đặc trưng đã chọn vào file csv
 x_train = x_train.iloc[:, selected_features_indices]
@@ -63,7 +52,7 @@ models = {
         random_state=42,
     ),
     "Random Forest": RandomForestClassifier(
-        n_estimators=10,
+        n_estimators=94,
         n_jobs=-1,
         random_state=42,
     ),
