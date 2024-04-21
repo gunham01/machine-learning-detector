@@ -95,10 +95,6 @@ def has_boolean_based_blind(s):
     return int(any(re.search(pattern, str(s), re.IGNORECASE) for pattern in patterns))
 
 
-def has_sql_network_comamnd(s):
-    return int(any(command in str(s).lower() for command in sql_network_comamnds))
-
-
 def select_features(s):
     s_length = len(str(s))
     sql_keyword_count = count_sql_keyword_in_string(s)
@@ -140,6 +136,4 @@ def select_features(s):
         sql_env_variable_count=count_sql_env_variables(s),
         # 17. Chứa pattern n=n hoặc n=m của trong boolean-based blind không
         has_boolean_based_blind=has_boolean_based_blind(s),
-        # 18. Có chứa câu lệnh SQL network không
-        has_network_comamnd=has_sql_network_comamnd(s),
     )
