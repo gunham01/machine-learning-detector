@@ -12,7 +12,7 @@ from dataset_reader import (
     split_features_to_data_and_label,
 )
 
-features = extract_features_from_dataset("../../dataset/sqli.csv")
+features = extract_features_from_dataset("../dataset/sqli.csv")
 x_train, y_train = split_features_to_data_and_label(features)
 
 best_i = best_f1 = 0

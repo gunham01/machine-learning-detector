@@ -10,7 +10,7 @@ from dataset_reader import (
     split_features_to_data_and_label,
 )
 
-features = extract_features_from_dataset("../../dataset/sqli.csv")
+features = extract_features_from_dataset("../dataset/sqli.csv")
 x_train, y_train = split_features_to_data_and_label(features)
 
 best_i = best_f1 = 0
@@ -36,13 +36,13 @@ for i in range(1, 101):
         best_f1 = f1
     print(f"n_neighbors = {i}, F1 score = {f1}")
 
-print(f"\nBest n_estimators = {best_i}, Best F1 score = {best_f1}")
+print(f"\nBest n_neighbors = {best_i}, Best F1 score = {best_f1}")
 
 plt.plot(x, y, "o-")
 plt.scatter(i, f1, color="blue")
 plt.scatter(i, f1, color="blue")
 plt.title("KNN")
-plt.xlabel("n_estimators")
+plt.xlabel("n_neighbors")
 plt.ylabel("F1 score")
 plt.grid(True)
 plt.show()
