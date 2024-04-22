@@ -1,13 +1,11 @@
 import json
+import time
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.feature_selection import (
-    SequentialFeatureSelector as SFS,
-)
 from dataset_reader import (
     extract_features_from_dataset,
     extract_features_from_datasets,
@@ -76,27 +74,31 @@ y_test = testing_df["label"]
 # Hàm đánh giá 1 mô hình bằng ma trận
 # nhầm lẫn, accuracy, precision, recall, và F1 score
 def score_model(model):
+    start_time = time.time()
     y_predict = model.predict(x_test)
+    end_time = time.time()
     cm_df = pd.crosstab(y_test, y_predict, rownames=[""], colnames=[""])
     printable_cm = cm_df.to_string()
     accuracy = accuracy_score(y_test, y_predict)
     precision = precision_score(y_test, y_predict)
     recall = recall_score(y_test, y_predict)
     f1 = f1_score(y_test, y_predict)
-    return printable_cm, accuracy, precision, recall, f1
+    training_time = end_time - start_time
+    return printable_cm, accuracy, precision, recall, f1, training_time
 
 
 highest_f1 = 0
 best_model = None
 best_model_name = ""
 for model_name, model in models.items():
-    cm, accuracy, precision, recall, f1 = score_model(model)
+    cm, accuracy, precision, recall, f1, training_time = score_model(model)
     print(f"{model_name}:")
     print(cm)
     print(f"Accuracy: {accuracy}")
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
     print(f"F1 score: {f1}")
+    print(f"Time: {round(training_time, ndigits=6)}s")
     print("\n")
 
     if f1 > highest_f1:

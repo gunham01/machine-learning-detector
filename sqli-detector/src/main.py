@@ -38,6 +38,7 @@ def on_find_users(_=None):
 def detect_sqli(content: str) -> bool:
     features = select_features(content)
     x_predict = pd.DataFrame([features]).iloc[:, selected_features_indices]
+    # x_predict = pd.DataFrame([features])
     result = best_model.predict(x_predict)
     return result[0] == 1
 
