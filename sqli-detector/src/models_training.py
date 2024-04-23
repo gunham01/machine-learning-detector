@@ -32,9 +32,9 @@ df.to_csv(features_filepath, index=False)
 x_train = df.drop("label", axis=1)
 y_train = df["label"]
 
-selected_features_indices = json.load(open("selected_features_index.json"))
 
 # Lưu tập huấn luyện với những đặc trưng đã chọn vào file csv
+selected_features_indices = json.load(open("selected_features_index.json"))
 x_train = x_train.iloc[:, selected_features_indices]
 train_data = pd.concat([x_train, y_train], axis=1)
 train_data.to_csv("../dataset/selected_features_short.csv", index=False)
@@ -43,14 +43,14 @@ train_data.to_csv("../dataset/selected_features_short.csv", index=False)
 models = {
     "Naive Bayes": MultinomialNB(),
     "KNN": KNeighborsClassifier(n_neighbors=3),
-    "Logistic Regression": LogisticRegression(max_iter=400, random_state=42),
+    "Logistic Regression": LogisticRegression(max_iter=400, random_state=34),
     "Decission Tree": DecisionTreeClassifier(
-        random_state=42,
+        random_state=34,
     ),
     "Random Forest": RandomForestClassifier(
         n_estimators=94,
         n_jobs=-1,
-        random_state=42,
+        random_state=34,
     ),
 }
 
