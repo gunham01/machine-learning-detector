@@ -10,7 +10,7 @@
 -   pandas
 -   python-dotenv
 -   sqlparse
--   mplcursors
+-   tabulate
 
 ### Thiết lập trước khi chạy app
 

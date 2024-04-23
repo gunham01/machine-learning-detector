@@ -11,11 +11,9 @@ from dataset_reader import (
     extract_features_from_datasets,
 )
 from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
+    confusion_matrix,
 )
+from tabulate import tabulate
 
 
 # 1. Đọc và trích xuất các đặc trưng từ các dataset
@@ -77,26 +75,43 @@ def score_model(model):
     start_time = time.time()
     y_predict = model.predict(x_test)
     end_time = time.time()
-    cm_df = pd.crosstab(y_test, y_predict, rownames=[""], colnames=[""])
-    printable_cm = cm_df.to_string()
-    accuracy = accuracy_score(y_test, y_predict)
-    precision = precision_score(y_test, y_predict)
-    recall = recall_score(y_test, y_predict)
-    f1 = f1_score(y_test, y_predict)
+    cm = confusion_matrix(y_test, y_predict)
+    fn = cm[1][0]
+    tp = cm[1][1]
+    fp = cm[0][1]
+    tn = cm[0][0]
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+    f1 = 2 * (precision * recall) / (precision + recall)
+    fnr = fn / (fn + tp)
+    fpr = fp / (tn + fp)
+
     training_time = end_time - start_time
-    return printable_cm, accuracy, precision, recall, f1, training_time
+    return cm, accuracy, precision, recall, f1, training_time, fpr, fnr
+
+
+def print_cm(cm):
+    table_data = [
+        ["", 0, 1],
+        [0, cm[0][0], cm[0][1]],
+        [1, cm[1][0], cm[1][1]],
+    ]
+    print(tabulate(table_data, tablefmt="fancy_grid"))
 
 
 highest_f1 = 0
 best_model = None
 best_model_name = ""
 for model_name, model in models.items():
-    cm, accuracy, precision, recall, f1, training_time = score_model(model)
+    cm, accuracy, precision, recall, f1, training_time, fpr, fnr = score_model(model)
     print(f"{model_name}:")
-    print(cm)
+    print_cm(cm)
     print(f"Accuracy: {accuracy}")
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
+    print(f"FPR: {fpr}")
+    print(f"FNR: {fnr}")
     print(f"F1 score: {f1}")
     print(f"Time: {round(training_time, ndigits=6)}s")
     print("\n")

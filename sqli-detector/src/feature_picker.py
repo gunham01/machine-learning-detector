@@ -1,6 +1,5 @@
 import json
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
 from dataset_reader import (
     extract_features_from_dataset,
     split_features_to_data_and_label,
